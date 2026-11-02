@@ -129,8 +129,11 @@
 
   // Gamepads: pad 0 controls player 1, pad 1 controls player 2.
   function gamepadAxis(index) {
-    const pads = navigator.getGamepads ? navigator.getGamepads() : [];
-    const pad = pads && pads[index];
+    // getGamepads() throws when the page is embedded in a frame that blocks
+    // the Gamepad API, so treat that as "no gamepad" instead of crashing.
+    let pads = [];
+    try { pads = navigator.getGamepads ? navigator.getGamepads() || [] : []; } catch { pads = []; }
+    const pad = pads[index];
     if (!pad) return { axis: 0, serve: false };
     let axis = pad.axes[1] || 0;
     if (pad.buttons[12] && pad.buttons[12].pressed) axis = -1;
@@ -200,6 +203,8 @@
     resize();
     prepareServe();
     updateHud();
+    if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
+    window.focus();
   }
 
   function diffLabel(d) { return { easy: "COMFORT", normal: "SPORT", hard: "SPORT+" }[d]; }
@@ -748,9 +753,13 @@
   function frame(now) {
     const dt = Math.min(0.033, (now - lastTime) / 1000);
     lastTime = now;
-    if (state.mode !== "paused") update(dt);
-    render();
     requestAnimationFrame(frame);
+    try {
+      if (state.mode !== "paused") update(dt);
+      render();
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   resize();
