@@ -147,3 +147,14 @@ kbd {
   z-index: 20;
   pointer-events: none;
 }
+
+#js-warning {
+  position: absolute;
+  left: 0; right: 0; top: 0;
+  padding: 10px 16px;
+  background: var(--m-red);
+  color: #fff;
+  font-size: 13px;
+  text-align: center;
+  z-index: 30;
+}

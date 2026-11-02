@@ -61,13 +61,21 @@
     ctx: null,
     muted: false,
     ensure() {
-      if (!this.ctx) {
-        const AC = window.AudioContext || window.webkitAudioContext;
-        if (AC) this.ctx = new AC();
+      // Audio is optional: never let a blocked or failing AudioContext stop input.
+      try {
+        if (!this.ctx) {
+          const AC = window.AudioContext || window.webkitAudioContext;
+          if (AC) this.ctx = new AC();
+        }
+        if (this.ctx && this.ctx.state === "suspended") this.ctx.resume().catch(() => {});
+      } catch (err) {
+        this.ctx = null;
       }
-      if (this.ctx && this.ctx.state === "suspended") this.ctx.resume();
     },
-    tone(freq, dur, { type = "square", vol = 0.08, slide = 0, delay = 0 } = {}) {
+    tone(freq, dur, opts) {
+      try { this._tone(freq, dur, opts); } catch (err) { /* ignore audio errors */ }
+    },
+    _tone(freq, dur, { type = "square", vol = 0.08, slide = 0, delay = 0 } = {}) {
       if (this.muted || !this.ctx) return;
       const t = this.ctx.currentTime + delay;
       const osc = this.ctx.createOscillator();
@@ -144,6 +152,9 @@
     return { axis, serve, start };
   }
   let padStartHeld = false;
+
+  window.addEventListener("error", (e) => toast("Error: " + (e.message || "unknown"), 6000));
+  window.addEventListener("unhandledrejection", (e) => console.warn(e.reason));
 
   // ---------- Game state ----------
   const makePaddle = (side) => ({
@@ -312,11 +323,11 @@
     ui.p2Serve.classList.toggle("on", s === 1);
   }
 
-  function toast(msg) {
+  function toast(msg, ms = 1400) {
     ui.toast.textContent = msg;
     ui.toast.classList.remove("hidden");
     clearTimeout(toast.t);
-    toast.t = setTimeout(() => ui.toast.classList.add("hidden"), 1400);
+    toast.t = setTimeout(() => ui.toast.classList.add("hidden"), ms);
   }
 
   function toggleMute() {
@@ -762,6 +773,8 @@
     }
   }
 
+  const jsWarning = document.getElementById("js-warning");
+  if (jsWarning) jsWarning.remove();
   resize();
   showMenuPanel("main");
   requestAnimationFrame(frame);
