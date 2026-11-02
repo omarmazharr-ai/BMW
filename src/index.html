@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BMW Pong</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app">
+    <!-- Scoreboard -->
+    <header id="hud" class="hidden">
+      <div class="side left">
+        <span class="name" id="p1-name">PLAYER 1</span>
+        <span class="serve-dot" id="p1-serve"></span>
+      </div>
+      <div class="score">
+        <span id="p1-score">0</span>
+        <span class="divider"></span>
+        <span id="p2-score">0</span>
+      </div>
+      <div class="side right">
+        <span class="serve-dot" id="p2-serve"></span>
+        <span class="name" id="p2-name">CPU</span>
+      </div>
+    </header>
+
+    <canvas id="game" aria-label="Pong table"></canvas>
+
+    <!-- Main menu -->
+    <section id="menu" class="overlay">
+      <div class="panel">
+        <img class="logo" id="brand-logo" src="assets/logo.svg" alt="Brand logo" />
+        <div class="m-stripe"><i></i><i></i><i></i></div>
+        <h1>PONG</h1>
+        <p class="tagline" id="brand-tagline">Sheer Driving Pleasure.</p>
+
+        <div class="buttons" id="main-buttons">
+          <button data-action="single" class="primary">1 Player</button>
+          <button data-action="versus">2 Players</button>
+          <button data-action="howto">How to play</button>
+        </div>
+
+        <div class="buttons hidden" id="difficulty-buttons">
+          <p class="label">Select difficulty</p>
+          <button data-difficulty="easy">Comfort</button>
+          <button data-difficulty="normal" class="primary">Sport</button>
+          <button data-difficulty="hard">Sport+</button>
+          <button data-action="back" class="ghost">Back</button>
+        </div>
+
+        <div class="howto hidden" id="howto">
+          <table>
+            <tr><th>Player 1</th><td><kbd>W</kbd> <kbd>S</kbd> or mouse</td></tr>
+            <tr><th>Player 2</th><td><kbd>↑</kbd> <kbd>↓</kbd></td></tr>
+            <tr><th>Serve</th><td><kbd>Space</kbd> or click</td></tr>
+            <tr><th>Pause</th><td><kbd>Esc</kbd> / <kbd>P</kbd></td></tr>
+            <tr><th>Fullscreen</th><td><kbd>F11</kbd> / <kbd>F</kbd></td></tr>
+            <tr><th>Sound</th><td><kbd>M</kbd></td></tr>
+          </table>
+          <p class="small">First to 11, win by 2. Serve switches every 2 points.
+            Hit the ball with a moving paddle to add spin. Gamepads work too.</p>
+          <button data-action="back" class="ghost">Back</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pause -->
+    <section id="pause" class="overlay hidden">
+      <div class="panel compact">
+        <h2>Paused</h2>
+        <div class="buttons">
+          <button data-action="resume" class="primary">Resume</button>
+          <button data-action="restart">Restart</button>
+          <button data-action="quit" class="ghost">Main menu</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Game over -->
+    <section id="gameover" class="overlay hidden">
+      <div class="panel compact">
+        <div class="m-stripe"><i></i><i></i><i></i></div>
+        <h2 id="winner-text">Player 1 wins</h2>
+        <p class="final" id="final-score">11 – 7</p>
+        <div class="buttons">
+          <button data-action="restart" class="primary">Rematch</button>
+          <button data-action="quit" class="ghost">Main menu</button>
+        </div>
+      </div>
+    </section>
+
+    <div id="toast" class="hidden"></div>
+  </div>
+
+  <script src="brand.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>

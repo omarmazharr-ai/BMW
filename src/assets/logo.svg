@@ -1,0 +1,7 @@
+<!-- Placeholder badge. Replace with the official BMW logo artwork. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <circle cx="100" cy="100" r="96" fill="#0b0d10" stroke="#ffffff" stroke-width="6"/>
+  <circle cx="100" cy="100" r="70" fill="none" stroke="#1c69d4" stroke-width="10"/>
+  <text x="100" y="113" text-anchor="middle" font-family="Segoe UI, Helvetica, Arial, sans-serif"
+        font-size="38" font-weight="700" letter-spacing="4" fill="#ffffff">BMW</text>
+</svg>

@@ -1,0 +1,16 @@
+{
+  "name": "bmw-pong",
+  "private": true,
+  "version": "1.0.0",
+  "description": "BMW-branded ping pong game for Windows, built with Tauri and HTML5 Canvas",
+  "scripts": {
+    "tauri": "tauri",
+    "dev": "tauri dev",
+    "build": "tauri build",
+    "icons": "tauri icon src/assets/app-icon.png",
+    "serve": "npx --yes http-server src -p 5173 -c-1"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.12.0"
+  }
+}
